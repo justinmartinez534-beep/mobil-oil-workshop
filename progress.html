@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>进度 - 美孚机油知识工坊</title>
+  <link rel="stylesheet" href="css/minimal.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content container">
+      <div class="logo">美孚机油<span>知识工坊</span></div>
+      <nav class="nav">
+        <a href="index.html">首页</a>
+        <a href="learn.html">学习</a>
+        <a href="flashcard.html">闪卡</a>
+        <a href="roots.html">索引</a>
+        <a href="progress.html" class="active">进度</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h1 style="margin-bottom: 2rem;">📊 学习进度</h1>
+
+      <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1rem;">总体进度</h3>
+        <div class="progress-bar" style="margin-bottom: 1rem;">
+          <div id="overall-progress" class="progress-fill" style="width: 0%;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span id="progress-text">已掌握 0 / 5 个知识点</span>
+          <span id="progress-percent">0%</span>
+        </div>
+      </div>
+
+      <div class="stats" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+          <div id="stat-mastered" class="stat-value">0</div>
+          <div class="stat-label">已掌握</div>
+        </div>
+        <div class="stat-card">
+          <div id="stat-learning" class="stat-value">0</div>
+          <div class="stat-label">学习中</div>
+        </div>
+        <div class="stat-card">
+          <div id="stat-streak" class="stat-value">0</div>
+          <div class="stat-label">连续学习(天)</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/wordData.js"></script>
+  <script src="js/storage.js"></script>
+  <script>
+    function loadProgress() {
+      const progress = Storage.getProgress();
+      const masteredCount = progress.masteredItems.length;
+      const totalCount = WordRoots.length;
+      const percent = Math.round((masteredCount / totalCount) * 100);
+
+      document.getElementById('overall-progress').style.width = percent + '%';
+      document.getElementById('progress-text').textContent = `已掌握 ${masteredCount} / ${totalCount} 个知识点`;
+      document.getElementById('progress-percent').textContent = percent + '%';
+      document.getElementById('stat-mastered').textContent = masteredCount;
+      document.getElementById('stat-learning').textContent = totalCount - masteredCount;
+      document.getElementById('stat-streak').textContent = progress.streak || 0;
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProgress);
+  </script>
+</body>
+</html>
