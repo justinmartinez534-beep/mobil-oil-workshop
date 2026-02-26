@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>索引 - 美孚机油知识工坊</title>
+  <link rel="stylesheet" href="css/minimal.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content container">
+      <div class="logo">美孚机油<span>知识工坊</span></div>
+      <nav class="nav">
+        <a href="index.html">首页</a>
+        <a href="learn.html">学习</a>
+        <a href="flashcard.html">闪卡</a>
+        <a href="roots.html" class="active">索引</a>
+        <a href="progress.html">进度</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h1 style="margin-bottom: 1.5rem;">🔍 知识点索引</h1>
+
+      <div style="margin-bottom: 2rem;">
+        <input type="text" id="search-input" class="search-box" placeholder="搜索知识点..." oninput="filterItems()">
+      </div>
+
+      <div id="items-grid" class="grid"></div>
+    </div>
+  </main>
+
+  <script src="js/wordData.js"></script>
+  <script>
+    function renderItems() {
+      const container = document.getElementById('items-grid');
+      const searchQuery = document.getElementById('search-input').value.toLowerCase();
+      
+      const filtered = WordRoots.filter(item => 
+        item.root.toLowerCase().includes(searchQuery) ||
+        item.meaning.toLowerCase().includes(searchQuery)
+      );
+
+      container.innerHTML = filtered.map(item => `
+        <div class="card" style="cursor: pointer;" onclick="location.href='learn.html'">
+          <div style="margin-bottom: 0.5rem;">
+            <span class="tag">${item.origin}</span>
+          </div>
+          <div class="card-title">${item.root}</div>
+          <div class="card-content">${item.meaning}</div>
+        </div>
+      `).join('');
+    }
+
+    function filterItems() {
+      renderItems();
+    }
+
+    document.addEventListener('DOMContentLoaded', renderItems);
+  </script>
+</body>
+</html>
