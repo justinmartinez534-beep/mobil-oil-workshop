@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学习 - 美孚机油知识工坊</title>
+  <link rel="stylesheet" href="css/minimal.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content container">
+      <div class="logo">美孚机油<span>知识工坊</span></div>
+      <nav class="nav">
+        <a href="index.html">首页</a>
+        <a href="learn.html" class="active">学习</a>
+        <a href="flashcard.html">闪卡</a>
+        <a href="roots.html">索引</a>
+        <a href="progress.html">进度</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>📚 渐进学习</h1>
+        <div>
+          <span id="current-index">1</span> / <span id="total-count">5</span>
+        </div>
+      </div>
+
+      <div class="progress-bar mb-4">
+        <div id="progress-fill" class="progress-fill" style="width: 20%;"></div>
+      </div>
+
+      <div id="learn-card" class="card" style="min-height: 400px;">
+        <div style="margin-bottom: 1rem;">
+          <span class="tag" id="item-origin">全合成机油</span>
+        </div>
+        <h2 id="item-root">美孚1号 (Mobil 1)</h2>
+        <p style="font-size: 1.125rem; color: var(--color-text); margin-bottom: 2rem;" id="item-meaning">
+          美孚旗舰全合成机油，采用先进合成技术，提供卓越保护
+        </p>
+        <div style="background: var(--color-bg); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 2rem;">
+          <h4 style="margin-bottom: 1rem;">📖 详细说明</h4>
+          <p id="item-description">美孚1号是美孚石油公司的旗舰产品系列...</p>
+        </div>
+        <h4 style="margin-bottom: 1rem;">💡 应用示例</h4>
+        <div id="item-examples" style="display: grid; gap: 1rem;"></div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+        <button class="btn btn-secondary" onclick="prevItem()">← 上一个</button>
+        <button class="btn btn-primary" onclick="markMastered()">✓ 已掌握</button>
+        <button class="btn btn-primary" onclick="nextItem()">下一个 →</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/wordData.js"></script>
+  <script src="js/storage.js"></script>
+  <script>
+    let currentIndex = 0;
+    
+    function loadItem() {
+      const item = WordRoots[currentIndex];
+      document.getElementById('current-index').textContent = currentIndex + 1;
+      document.getElementById('total-count').textContent = WordRoots.length;
+      document.getElementById('progress-fill').style.width = ((currentIndex + 1) / WordRoots.length * 100) + '%';
+      document.getElementById('item-origin').textContent = item.origin;
+      document.getElementById('item-root').textContent = item.root;
+      document.getElementById('item-meaning').textContent = item.meaning;
+      document.getElementById('item-description').textContent = item.description;
+      
+      const examplesDiv = document.getElementById('item-examples');
+      examplesDiv.innerHTML = item.examples.map(ex => `
+        <div style="background: rgba(251, 191, 36, 0.1); padding: 1rem; border-radius: var(--radius-sm); border-left: 3px solid var(--color-primary);">
+          <strong>${ex.word}</strong> - ${ex.meaning}
+          <p style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.875rem;">${ex.explanation}</p>
+        </div>
+      `).join('');
+    }
+    
+    function nextItem() {
+      if (currentIndex < WordRoots.length - 1) {
+        currentIndex++;
+        loadItem();
+      }
+    }
+    
+    function prevItem() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        loadItem();
+      }
+    }
